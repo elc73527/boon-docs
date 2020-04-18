@@ -4,7 +4,7 @@
 
 ## Overview
 
-[Nano Documentation](docs/UI-docs)
+[Nano Documentation](docs/UI-docs.md)
 
 ## SDK Guides and Tutorials
 
