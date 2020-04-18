@@ -1,10 +1,10 @@
 ![Boon Logo](images/BoonLogic.png)
   
-# Boon Logic Expert Nano
+# Boon Logic Documentation
 
 ## Overview
 
-[Nano Documentation](https://boonlogic.github.io/expert-rest-api/UI-docs)
+[Nano Documentation](docs/UI-docs)
 
 ## SDK Guides and Tutorials
 
