@@ -1,5 +1,5 @@
 ![Logo](../images/BoonLogic.png)   
-# Guide: Introduction to Clustering with the Boon Nano
+# Introduction to Clustering with the Boon Nano
 
 The Boon Nano is a high-speed, high-efficiency, clustering (or segmentation) algorithm based on unsupervised machine learning. The Nano builds clusters of similar n-space vectors (or patterns) based on the following key configuration parameters:
 * Numeric Type: The type of the features in each pattern. floating-point (float32), signed integer (int16), unsigned integer (uint16).

@@ -14,7 +14,7 @@
 5. Close the prompt window
 
 Congratulations! Your nano web access is now ready to use.  
-See [Tutorial: The General Pipeline](../Tutorials/Tutorial_The_General_Pipeline.md) for next steps.
+See [The General Pipeline](../Tutorials/Tutorial_The_General_Pipeline.md) for next steps.
 <br/>
 
 [Return to documentation homepage](`./UI-docs.md)

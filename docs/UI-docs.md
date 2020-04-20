@@ -11,8 +11,6 @@
 
 ## Guides
 
-#### [BoonNano](./Guide_Boon_Nano.md) A list an links to all Boon Nano API calls.
-
 #### [Nano Results](./Guide_Nano_Results.md) An explanation of the analytic results returned by the Nano for a given input data set.
 
 #### [Nano Status](./Guide_Nano_Status.md) An explanation of the analytic information describing the machine learning models built for your data set.
