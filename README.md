@@ -6,6 +6,8 @@
 
 [Nano Documentation](docs/UI-docs.md)
 
+[API Guide](docs/index.html)
+
 ## SDK Guides and Tutorials
 
 [Excel SDK Documentation](https://boonlogic.github.io/expert-excel-sdk)
