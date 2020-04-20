@@ -12,7 +12,7 @@
 
 [Excel SDK Documentation](https://boonlogic.github.io/expert-excel-sdk)
 
-[Python SDK Documentation](https://boonlogic.github.io/expert-python-sdk/docs/python-docs)
+[Python SDK Documentation](https://boonlogic.github.io/expert-python-sdk)
 
 [Matlab SDK Documentation](https://boonlogic.github.io/expert-matlab-sdk)
 
