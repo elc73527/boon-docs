@@ -1,0 +1,1435 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Boon Logic BoonNano API (expert/v3 Server)\n",
+    "version": "3.0.0",
+    "title": "Boon Logic BoonNano API (expert/v3 Server)"
+  },
+  "tags": [
+    {
+      "name": "general",
+      "description": "General settings and information"
+    },
+    {
+      "name": "instances",
+      "description": "BoonNano instance management"
+    },
+    {
+      "name": "configuration",
+      "description": "Configuration of BoonNano instances"
+    },
+    {
+      "name": "cluster",
+      "description": "Clustering actions and results"
+    }
+  ],
+  "securityDefinitions": {
+    "api-key": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "x-token"
+    },
+    "api-tenant": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "api-tenant"
+    }
+  },
+  "security": [
+    {
+      "api-key": [],
+      "api-tenant": []
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/expert/version": {
+      "get": {
+        "tags": [
+          "general"
+        ],
+        "summary": "Retrieves API version information",
+        "operationId": "getVersion",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, version information returned",
+            "schema": {
+              "$ref": "#/definitions/version"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/nanoInstance/{instanceID}": {
+      "post": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Requests a new nano instance with specified instanceID from the available pool",
+        "operationId": "postNanoInstanceByID",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9.-_]+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, return instance id object",
+            "schema": {
+              "$ref": "#/definitions/instanceID"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Get the status of a specified instance",
+        "operationId": "getNanoInstanceByID",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9.-_]+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, return instance id object",
+            "schema": {
+              "$ref": "#/definitions/instanceID"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Delete nano instance associated with instanceID",
+        "operationId": "deleteNanoInstance",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9.-_]+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/Success"
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/nanoInstances": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Get a list of allocated nano instances",
+        "operationId": "getNanoInstanceList",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/instanceIDList"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/snapshot/{instanceID}": {
+      "get": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Takes a snapshot of the specified instanceID",
+        "operationId": "getSnapshot",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/octet-stream"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9.-_]+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation, returned snapshot file",
+            "schema": {
+              "type": "file"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "instances"
+        ],
+        "summary": "Restores a saved snapshot for specified instanceID",
+        "operationId": "postSnapshot",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "snapshot",
+            "in": "formData",
+            "description": "Snapshot file to be restored",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/configTemplate": {
+      "get": {
+        "tags": [
+          "configuration"
+        ],
+        "summary": "Gets a cluster configuration template based on query parameters",
+        "operationId": "getConfigTemplate",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "featureCount",
+            "description": "number of columns in data",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "format": "uint16"
+          },
+          {
+            "name": "numericFormat",
+            "in": "query",
+            "description": "numeric type of data to be uploaded",
+            "type": "string",
+            "enum": [
+              "uint16",
+              "float32",
+              "int16"
+            ],
+            "required": true
+          },
+          {
+            "name": "minVal",
+            "description": "array of minimum values",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "required": true
+          },
+          {
+            "name": "maxVal",
+            "description": "array of maximum values",
+            "in": "query",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "float"
+            },
+            "required": true
+          },
+          {
+            "name": "weight",
+            "in": "query",
+            "description": "array of weights",
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "uint16"
+            },
+            "required": true
+          },
+          {
+            "name": "label",
+            "in": "query",
+            "description": "array of labels",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "percentVariation",
+            "in": "query",
+            "type": "number",
+            "format": "float",
+            "description": "the percent variation (for instance, 0.025 gives 2.5% variation) for the clustering",
+            "required": false
+          },
+          {
+            "name": "accuracy",
+            "in": "query",
+            "type": "number",
+            "format": "float",
+            "description": "statistical worst-case accuracy of the algorithm stated as a z-value within a normal distribution. The achieved accuracy in practice will be much better than this. For instance, 0.75 will increase speed but create a few more classification errors near boundaries in n-space. Using 0.99 will slow the clustering slightly in exchange for fewer errors between adjacent clusters in n-space.",
+            "required": false
+          },
+          {
+            "name": "streamingWindowSize",
+            "in": "query",
+            "type": "integer",
+            "format": "uint16",
+            "description": "the number of vectors to concatenate to simulate parametric input",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, sample clusterConfig returned",
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/clusterConfig/{instanceID}": {
+      "post": {
+        "tags": [
+          "configuration"
+        ],
+        "summary": "Sets nano instance clustering configuration associated with instanceID",
+        "operationId": "postClusterConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "config",
+            "in": "body",
+            "description": "Nano instance configuration block",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "configuration"
+        ],
+        "summary": "Gets nano instance clustering configuration associated with instanceID",
+        "operationId": "getClusterConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, status information returned",
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/autoTuneConfig/{instanceID}": {
+      "post": {
+        "tags": [
+          "configuration"
+        ],
+        "summary": "Autotunes cluster configuration for specified instanceID",
+        "operationId": "postAutoTuneConfig",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "byFeature",
+            "description": "whether to autotune min/max for each column or overall",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "autoTunePV",
+            "description": "determines whether to autotune the percent variation",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "autoTuneRange",
+            "description": "determines whether to autotune the min and max values",
+            "in": "query",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "exclusions",
+            "description": "list of indexed columns to exclude when autotuning the min/max values",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "uint16",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/clusterConfig"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/data/{instanceID}": {
+      "post": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Submit data file for clustering",
+        "operationId": "postData",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "data",
+            "in": "formData",
+            "description": "The data file to be uploaded",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "runNano",
+            "description": "Run the nano after POSTing the data",
+            "in": "query",
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "fileType",
+            "description": "The type of the data file being transferred\n\n- csv = international csv (comma delimited, periods for decimal point)\n- cvs-c = continental csv (semicolon delimited, comma for decimal point)\n- raw = raw data (little endian)\n- raw-n = (big-endian/network byte order)",
+            "in": "query",
+            "default": "csv",
+            "type": "string",
+            "enum": [
+              "csv",
+              "csv-c",
+              "raw",
+              "raw-n"
+            ],
+            "x-exportParamName": "fileType"
+          },
+          {
+            "name": "gzip",
+            "in": "query",
+            "description": "file is zipped",
+            "default": false,
+            "type": "boolean"
+          },
+          {
+            "name": "results",
+            "in": "query",
+            "type": "array",
+            "description": "An array of optional result tags to return.\n\n- ID = Cluster IDs\n- SI = Smoothed Anomaly Indexes\n- RI = Raw Anomaly Indexes\n- FI = Frequency Indexes\n- DI = Distance Indexes",
+            "items": {
+              "uniqueItems": true,
+              "minItems": 0,
+              "maxItems": 7,
+              "type": "string",
+              "enum": [
+                "ID",
+                "SI",
+                "RI",
+                "FI",
+                "DI"
+              ]
+            }
+          },
+          {
+            "name": "appendData",
+            "in": "query",
+            "required": true,
+            "type": "boolean",
+            "default": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/nanoRunObject"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/nanoRunStreaming/{instanceID}": {
+      "post": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Submit data in streaming mode and run clustering",
+        "operationId": "postRunStreaming",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "data",
+            "in": "formData",
+            "description": "The data file to be uploaded",
+            "required": true,
+            "type": "file"
+          },
+          {
+            "name": "fileType",
+            "description": "The type of the data file being transferred\n\n- csv = international csv (comma delimited, periods for decimal point)\n- cvs-c = continental csv (semicolon delimited, comma for decimal point)\n- raw = raw data (little endian)\n- raw-n = (big-endian/network byte order)",
+            "in": "query",
+            "default": "csv",
+            "type": "string",
+            "enum": [
+              "csv",
+              "csv-c",
+              "raw",
+              "raw-n"
+            ],
+            "x-exportParamName": "fileType"
+          },
+          {
+            "name": "gzip",
+            "in": "query",
+            "description": "file is zipped",
+            "default": false,
+            "type": "boolean"
+          },
+          {
+            "name": "results",
+            "in": "query",
+            "type": "array",
+            "description": "An array of optional result tags to return.\n\n- ID = Cluster IDs\n- SI = Smoothed Anomaly Indexes\n- RI = Raw Anomaly Indexes\n- FI = Frequency Indexes\n- DI = Distance Indexes",
+            "items": {
+              "uniqueItems": true,
+              "minItems": 0,
+              "maxItems": 7,
+              "type": "string",
+              "enum": [
+                "ID",
+                "SI",
+                "RI",
+                "FI",
+                "DI"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/nanoRunObject"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/bufferStatus/{instanceID}": {
+      "get": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Get buffer status for this nano instance",
+        "operationId": "getBufferStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, buffer status returned",
+            "schema": {
+              "$ref": "#/definitions/bufferStatus"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/nanoRun/{instanceID}": {
+      "post": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Initiate a nanorun using currently staged pattern data and clustering parameters",
+        "operationId": "postNanoRun",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "results",
+            "in": "query",
+            "type": "array",
+            "required": false,
+            "description": "An array of optional result tags to return.\n\n- ID = Cluster IDs\n- SI = Smoothed Anomaly Indexes\n- RI = Raw Anomaly Indexes\n- FI = Frequency Indexes\n- DI = Distance Indexes",
+            "items": {
+              "uniqueItems": true,
+              "minItems": 0,
+              "maxItems": 7,
+              "type": "string",
+              "enum": [
+                "ID",
+                "SI",
+                "RI",
+                "FI",
+                "DI"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/nanoRunObject"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/nanoStatus/{instanceID}": {
+      "get": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Get clusters' statistics",
+        "operationId": "getNanoStatus",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "results",
+            "in": "query",
+            "description": "An array of results to return:\n\nCluster Information Options (includes cluster 0):\n- PCA = principal component analysis\n- clusterSizes = number of patterns in each cluster\n- anomalyIndexes = raw anomaly index\n- frequencyIndexes = frequency index\n- distanceIndex = distance index\n\nOther Options:\n- patternMemory = Base64 pattern memory\n- disArray = disentangling arrays for the pattern memory\n- clusterGrowth = indexes of cluster increases\n- numClusters = number of clusters\n- totalInferences = total number of patterns clustered\n- averageInferenceTime = time to cluster per pattern",
+            "required": true,
+            "type": "array",
+            "items": {
+              "minItems": 1,
+              "maxItems": 11,
+              "type": "string",
+              "enum": [
+                "PCA",
+                "patternMemory",
+                "clusterGrowth",
+                "clusterSizes",
+                "anomalyIndexes",
+                "frequencyIndexes",
+                "disArray",
+                "distanceIndexes",
+                "totalInferences",
+                "averageInferenceTime",
+                "numClusters"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success, status information returned",
+            "schema": {
+              "$ref": "#/definitions/nanoStatus"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/expert/v3/nanoResults/{instanceID}": {
+      "get": {
+        "tags": [
+          "cluster"
+        ],
+        "summary": "Get clustering results per pattern",
+        "operationId": "getNanoResults",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "instanceID",
+            "in": "path",
+            "description": "instance identifier",
+            "required": true,
+            "type": "string",
+            "maxLength": 32,
+            "pattern": "[A-Za-z0-9]+"
+          },
+          {
+            "name": "results",
+            "in": "query",
+            "type": "array",
+            "required": true,
+            "description": "An array of result tags to return.\n\n- ID = Cluster IDs\n- SI = Smoothed Anomaly Indexes\n- RI = Raw Anomaly Indexes\n- FI = Frequency Indexes\n- DI = Distance Indexes",
+            "items": {
+              "uniqueItems": true,
+              "minItems": 0,
+              "maxItems": 7,
+              "type": "string",
+              "enum": [
+                "ID",
+                "SI",
+                "RI",
+                "FI",
+                "DI"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/nanoRunObject"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/responses/ServerError"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "version": {
+      "required": [
+        "release",
+        "api-version",
+        "nano-secure",
+        "builder",
+        "expert-api",
+        "expert-common",
+        "swagger-ui"
+      ],
+      "properties": {
+        "release": {
+          "type": "string",
+          "description": "software release of server"
+        },
+        "api-version": {
+          "type": "string",
+          "description": "api version"
+        },
+        "nano-secure": {
+          "type": "string",
+          "description": "SHA1 of nano-secure"
+        },
+        "builder": {
+          "type": "string",
+          "description": "SHA1 of builder"
+        },
+        "expert-api": {
+          "type": "string",
+          "description": "SHA1 of expert-api"
+        },
+        "expert-common": {
+          "type": "string",
+          "description": "SHA1 of expert-common"
+        },
+        "swagger-ui": {
+          "type": "string",
+          "description": "SHA1 of swagger-ui"
+        }
+      }
+    },
+    "instanceID": {
+      "required": [
+        "instanceID",
+        "isNew"
+      ],
+      "properties": {
+        "instanceID": {
+          "description": "instance identifier",
+          "type": "string",
+          "maxLength": 32,
+          "pattern": "[A-Za-z0-9.-_]+"
+        },
+        "createdAt": {
+          "description": "creation timestamp",
+          "type": "string"
+        },
+        "modifiedAt": {
+          "description": "time of last configuration or nano run",
+          "type": "string"
+        },
+        "isNew": {
+          "description": "true if instance was created by this api endpoint",
+          "type": "boolean"
+        }
+      }
+    },
+    "instanceIDList": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/instanceID"
+      }
+    },
+    "uint16Array": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "uint16"
+      }
+    },
+    "uint32Array": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "uint32"
+      }
+    },
+    "uint64Array": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "uint64"
+      }
+    },
+    "nanoStatus": {
+      "properties": {
+        "PCA": {
+          "$ref": "#/definitions/PCA"
+        },
+        "patternMemory": {
+          "$ref": "#/definitions/patternMemory"
+        },
+        "clusterGrowth": {
+          "$ref": "#/definitions/uint64Array"
+        },
+        "clusterSizes": {
+          "$ref": "#/definitions/uint64Array"
+        },
+        "anomalyIndexes": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "frequencyIndexes": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "disArray": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "distanceIndexes": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "totalInferences": {
+          "$ref": "#/definitions/totalInferences"
+        },
+        "averageInferenceTime": {
+          "$ref": "#/definitions/averageInferenceTime"
+        },
+        "numClusters": {
+          "$ref": "#/definitions/numClusters"
+        }
+      }
+    },
+    "patternMemory": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "integer",
+          "format": "uint8"
+        }
+      }
+    },
+    "clusterGrowth": {
+      "description": "The number of patterns that have been assigned IDs for all calls to the nano",
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "format": "uint64"
+      }
+    },
+    "totalInferences": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "numClusters": {
+      "type": "integer",
+      "format": "uint64"
+    },
+    "averageInferenceTime": {
+      "type": "number",
+      "format": "float"
+    },
+    "featureConfig": {
+      "required": [
+        "minVal",
+        "maxVal",
+        "weight"
+      ],
+      "properties": {
+        "minVal": {
+          "type": "number",
+          "format": "float",
+          "description": "the value that should be considered the minimum value for this feature. This can be set to a value larger than the actual min if you want to treat all value less than that as the same (for instance, to keep a noise spike from having undue influence in the clustering"
+        },
+        "maxVal": {
+          "type": "number",
+          "format": "float",
+          "description": "corresponding maximum value"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "uint16",
+          "description": "weight for this feature"
+        },
+        "label": {
+          "type": "string",
+          "description": "label associated with feature"
+        }
+      }
+    },
+    "clusterConfig": {
+      "required": [
+        "numericFormat",
+        "features",
+        "percentVariation",
+        "accuracy",
+        "streamingWindowSize"
+      ],
+      "properties": {
+        "numericFormat": {
+          "description": "numeric type of data to be uploaded",
+          "type": "string",
+          "enum": [
+            "int16",
+            "float32",
+            "uint16"
+          ]
+        },
+        "features": {
+          "description": "Array of feature configurations",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/featureConfig"
+          }
+        },
+        "percentVariation": {
+          "type": "number",
+          "format": "float",
+          "description": "the percent variation (for instance, 0.025 gives 2.5% variation) for the clustering"
+        },
+        "accuracy": {
+          "type": "number",
+          "format": "float",
+          "description": "statistical worst-case accuracy of the algorithm stated as a z-value within a normal distribution. The achieved accuracy in practice will be much better than this. For instance, 0.75 will increase speed but create a few more classification errors near boundaries in n-space. Using 0.99 will slow the clustering slightly in exchange for fewer errors between adjacent clusters in n-space."
+        },
+        "streamingWindowSize": {
+          "type": "integer",
+          "format": "uint16",
+          "description": "streaming window size",
+          "default": 1
+        }
+      }
+    },
+    "PCA": {
+      "description": "array of pca values",
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "number",
+          "format": "float",
+          "minItems": 3,
+          "maxItems": 3
+        }
+      }
+    },
+    "nanoRunObject": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "$ref": "#/definitions/uint32Array"
+        },
+        "SI": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "RI": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "FI": {
+          "$ref": "#/definitions/uint16Array"
+        },
+        "DI": {
+          "$ref": "#/definitions/uint16Array"
+        }
+      }
+    },
+    "bufferStatus": {
+      "required": [
+        "totalBytesWritten",
+        "totalBytesProcessed",
+        "totalBytesInBuffer"
+      ],
+      "properties": {
+        "totalBytesWritten": {
+          "type": "integer",
+          "format": "uint64",
+          "description": "Total number of bytes written for this instance"
+        },
+        "totalBytesProcessed": {
+          "type": "integer",
+          "format": "uint64",
+          "description": "Total number of bytes processed for this instance"
+        },
+        "totalBytesInBuffer": {
+          "type": "integer",
+          "format": "uint64",
+          "description": "Total bytes that will be processed on next run"
+        }
+      }
+    },
+    "Error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "uint16"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "responses": {
+    "Success": {
+      "description": "Operation was successful",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "NotFound": {
+      "description": "The specified resource was not found",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "BadRequest": {
+      "description": "Bad reqeust",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "Unauthorized": {
+      "description": "Unauthorized",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ServerError": {
+      "description": "Server error",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  }
+}

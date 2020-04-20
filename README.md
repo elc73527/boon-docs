@@ -6,7 +6,7 @@
 
 [Nano Documentation](docs/UI-docs.md)
 
-[API Guide](docs/index.html)
+[API Guide](static/index.html)
 
 ## SDK Guides and Tutorials
 
