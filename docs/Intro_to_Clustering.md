@@ -1,23 +1,72 @@
 ![Logo](../images/BoonLogic.png)   
 # Introduction to Clustering with the Boon Nano
 
-The Boon Nano is a high-speed, high-efficiency, clustering (or segmentation) algorithm based on unsupervised machine learning. The Nano builds clusters of similar n-space vectors (or patterns) based on the following key configuration parameters:
-* Numeric Type: The type of the features in each pattern. floating-point (float32), signed integer (int16), unsigned integer (uint16).
-* Pattern Length: The number of features or columns in each input vector.
-* Range of values for each feature: The minimum and maximum value expected for each feature.
-* Percent Variation: The amount of similarity to require between patterns within each cluster.
+The Boon Nano is a high-speed, high-efficiency, clustering and segmentation algorithm based on unsupervised machine learning. The Nano builds clusters of similar *n*-space vectors (or **patterns**) in real-time based on their similarity. Each pattern has a sequence of **features** that the Nano uses in its measurement of similarity. 
 
-There are also three less commonly used parameters
-* Weight: You may choose to weight some features more heavily than others (the default weight is 1)
-* Streaming Window Size: Generally, set to 1, unless the Nano is being used to stream overlapping windows across data.
-* Accuracy: Generally, this is set to the maximum of 0.99.
+<img src="../images/segmentation.png" width="800">
 
-Once these parameters are specified, then each pattern assigned to a cluster will vary by at most Percent Variation from the centroid of that cluster. Figure 1 shows two input vectors. Since the coordinates of the vector are decimal valued, the appropriate numeric type is floating-point (float32). Since there are 60 features in each pattern, the Pattern Length of each vector is 60. The Range of each feature as shown on the Y-axis is from 0.0 to 2.0. It is possible to configure each feature with its own range.
+## Examples of Patterns
 
-![Figure 1](../images/Figure1.png)   
+* **Motor Status Tags:** Industrial motors are controlled by servo feedback loops that have multiple features. A pattern that could be used to segment motor performand date might be  
+(Output Current, Torque Trim, Position, Velocity, Position Error, Velocity Error)
+* **Flight Recorder Data:** An aircraft has multiple sensors that define its operating state at any point in time. For example, a pattern might have these features<br/>
+(Altitude, Air Speed, Ground Speed, Lateral Acceleration, Longitudinal Acceleration, Vertical Acceleration, Left Aileron Position, Right Aileron Position)   
+* **Power Spectra:** The output of vibrational sensors is often transformed into frequency spectra. In this case, the features represent adjacent frequency bands and the value of each feature is power from the source signal in that frequency band.
+* **Triggered Impulsive Data:** If *n* consecutive samples from a single sensor are acquired like a snap shot, they can be compared by shape and clustered by similarity to gain insight about the varieties of signals occurring in the data stream. The snap shot is typically triggered by a threshold crossing of the signal.
+* **Single Sensor Streaming Data:**  Consecutive overlapping windows of the most recent *n* samples from a sensor form a natural collection of *n*-dimensional vectors.
+
+## Using the Boon Nano
+The Boon Nano is deployed in both a general use plaform called **Expert** and as a streaming sensor analytics application called **Amber**
+* **Expert:** The Expert console provides the full functionality of the Boon Nano including all analytics (described below) and is oriented toward batch processing of input data.
+* **Amber:** By specializing the Expert console for real-time streaming data, Amber provides an easy-to-use interface for sending streams of successive sensor values as a time series and getting back the same number of analytic values. These analytic values   
+
+
+## Configuring the Boon Nano
+
+### Batch Mode vs. Streaming Mode
+The Boon Nano can be operated in batch mode or streaming mode depending on the application.  
+* **Batch Mode:** In batch mode, successive patterns clustered by the Nano are not assumed to have any temporal relationship. For instance, segmentation of tissue types from a DICOM CT scan uses batch mode. Another example is anomaly detection for doing quality control in camera images of standard units on a manufacturing line.
+* **Streaming Mode:** In streaming mode, it assumed that successive patterns are temporally related and often they overlap. Examples of streaming mode data would be overlapping, successive windows of single sensor data or successive sensor fusion patterns coming off multiple related sensors in real-time. 
+
+### Clustering Configuration
+The clustering parameters of the Nano determine the properties the clusters of the input data will have. 
+* **Numeric Type:** The three types available are floating-point (float32), signed integer (int16), unsigned integer (uint16). For nearly all applications, float32 is a good general numeric type to use. However, some applications naturally lend to integer types (for instance, bin counts in a histogram).
+* **Feature List:** A pattern is comprised of **features** which represent the properties of each column in the vectors to be clustered. Each feature has a **range** (a min and max value) that represents the expected range of values that feature will take on in the input data. This range need not represent the true range. For example, if the range is set to -5 to 5, then values greater than 5 will be treated as if they were 5 and value less than -5 will be treated as -5. This truncation (or outlier filtering) can be useful in some data sets. In addition, each feature is assigned a **weight** between 0 and 1000 which determines its relative importance in placing of input vectors into clusters. Setting all weights to 1 is a common setting. Setting a weight to 0 means that feature is ignored in clustering as if it were not in the vector at all. Finally, each feature can be assigned an optional **label** (for example, "systolic", "pulse rate", "payload length", "output current"). Labels have no effect on the clustering.  
+* **Percent Variation:** The percent variation ranges from 1% to 20% and indicates the amount of similarity to the Nano will require between patterns within the same cluster. Smaller percent variations creates more finely grained clusters and many clusters. A larger choice for percent variation produces coarser clustering with fewer clusters.
+* **Streaming Window Size:** This indicates the number of successive samples to use in creating overlapping patterns. For instance, it is typical in single-sensor streaming mode applications to have only feature and a streaming window size greater than 1. If there is one feature, and the streaming window size is 25, then each pattern clustered by the Nano is comprised of the most recent 25 values from the sensor. In this case, each pattern overlaps 24 samples with its predecessor. In batch mode, it is typical to use a streaming window size of 1.
+
+### Autotuning Configuration
+Two clustering parameters, the percent variation and the range for each feature, can be *autotuned*, that is, chosen automatically, by the Boon Nano prescanning representative data. The range for each feature can be chosen either individually or a single range can be chosen to apply to all features. The percent variation is chosen automatically using an "elbow" technique by preclustering the input data and finding the percent variation that balances cluster cohesion and separation. 
+
+* **Autotune Range:** If this is true, the user-supplied range(s) specified in the Nano configuration gets replaced with the autotuned range.   If false, no the user-supplied range(s) is left intact.
+* **Autotune Percent Variation:** If this is true, the user-supplied percent variation in the Nano configuration get replaced with the percent variation found through the autotuning. If false, the user-supplied percent variation is left intact.
+* **Autotune By Feature:** If this is true and the option to autotune the range is true, then the autotuning will find a range customized to each feature. If false, then autotuning will find a single range that applies to all features.
+* **Exclusions:** An array of exclusions may be provided which causes the autotuning to ignore all of those features. For instance, if the array [2, 7] is provided, then autotuning is applied to all features except the 2nd and 7th features.
+
+### Streaming Configuration (Amber Only)
+Streaming parameters apply to the Amber deployment of the Boon Nano. If streaming mode is selected in the configuration, then a variety of parameters determine the analytic values returned back for the sensor samples sent into Amber. In its default configuration, Amber returns one *analytic* sample for each *sensor* value sent into it. The most typical analytic value is the smoothed anomaly index (SI) described below, but other outputs can be selected. The streaming window size selected in the clustering configuration (described above) is a key parameter as it determines the amount of sensor value "history" that will be included in each pattern to be clustered.
+
+<table class="table">
+  <tr>
+    <td><img src="../images/Figure2.png" width="800"></td>
+  </tr>
+  <tr>
+    <td><em>One feature (all samples from the same sensor) and streaming window size of 250. Each input vector is 250 successive samples where we form successive patterns by dropping the oldest sample from the current pattern and appending the next sample from the input stream.</em></td>
+  </tr>
+</table>
+
+As sensor values are streamed into it, Amber transitions automatically through four phases: starting, autotuning, learning, and monitoring.
+
+<img src="../images/amber_training.png" width="800">
+
+* **Starting:** As the first sensor samples are sent to Amber, there is not sufficient data to return meaningful analytic results. Return a 0 value as the analytic for each sensor value sent. Eventually, sufficient (e.g. 1000) samples have been acquired to move to the autotuning phase.
+* **Autotuning:** Using the autotuning configuration (described above) and the sensor samples buffered thus far, tune the Boon Nano hyperparameters (feature ranges and percent variation) to optimal values for this sensor. During autotuning, zeros are returned for as the anomaly index for sensor values sent in.
+* **Learning:** Configure the Boon Nano with the parameters found during autotuning and then start training the Nano with the samples that have been buffered thus far. In this phase, the Boon Nano is adding clusters as needed to build a high-dimensional analytic model that describes the sensor input and that conforms to the clustering configuration (described above). There is sufficient data in this phase to return real analytic output for each sensor sample sent in. Part of the streaming configuration is to determine when learning stops, called **graduation requirements**. Graduation occurs automatically based on a number of parameters (described below). In principle, learning can continue indefinitely, but it is usually desirable to automatically turn off learning upon graduation so that no new clusters are created. This solidifies the model so that the future analytics results retain their same meaning over many months of operation.
+* **Monitoring:** The final phase of Amber is the monitoring phase where learning has been turned off. Each sensor value sent in becomes the final sample in the streaming window of prior samples. That window is clustered by the Boon Nano in real-time and the result returned as the Amber analytic value for that sample.
+
+![Figure 3](../images/Figure1.png)   
 *Figure 1: Calculation of percent variation between two patterns*
 
-## Configuration Parameters
 
 ### Numeric Type
 You must choose one numeric type to apply to all of the features in each input vector. A good default choice for numeric type is float32, which represents 32-bit, IEEE-standard, floating-point values. In some cases, one may know that all features in the input data are always integers ranging from -32,768 and 32,767 (int16) or non-negative integers ranging from 0 to 65,535 (uint16). Using these integer types may may give slightly faster inference times, however, float32 performance is usually similar to the performance for the integer types.
