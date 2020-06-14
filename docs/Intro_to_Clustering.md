@@ -3,7 +3,7 @@
 
 The Boon Nano is a high-speed, high-efficiency, clustering and segmentation algorithm based on unsupervised machine learning. The Nano builds clusters of similar *n*-space vectors (or **patterns**) in real-time based on their similarity. Each pattern has a sequence of **features** that the Nano uses in its measurement of similarity. 
 
-<img src="../images/segmentation.png" width="800">
+<img src="../images/Segmentation.png" width="800">
 
 ## Examples of Patterns
 
