@@ -127,6 +127,6 @@ The Raw Anomaly Index for each of the three clusters are as follows:
 This indicates Cluster 1 had the most patterns assigneed to it. Cluster 2 was also common, and Cluster 3 was significantly less common. It is worth noting that a Raw Anomaly Index of 563 would not be sufficient in practice to indicate an anomaly in the machine learning model. Typically, useful anomaly indexes must be in the range of 700 to 1000 to indicate a pattern that is far outside the norm of what has been learned.
 
 **Important Simplifications:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular, 
-* The Boon Nano is typically be used to cluster 100s of millions or billions of patterns.
+* The Boon Nano is typically be used to cluster millions or billions of patterns.
 * The number of clusters created from "real" data typically runs into the hundreds or even thousands of clusters. 
 * The speed of the Boon Nano for such a small data set is not noticeable over other clustering techniques such as K-means. However, when the input set contains 100s of millions of input vectors or when the clustering engine must run at sustained rates of 100s of thousands of inferences per second (as with video or streaming sensor data), the Boon Nano's microsecond inference speed makes it the only feasible technology for these kinds of solutions.
