@@ -52,7 +52,7 @@ The Boon Nano uses the clustering configuration to determine the properties of t
 * **streamingWindowSize:** This indicates the number of successive samples to use in creating overlapping patterns. For instance, it is typical in single-sensor streaming mode applications to have only one feature and a streaming window size greater than 1. If there is one feature, and the streaming window size is 25, then each pattern clustered by the Nano is comprised of the most recent 25 values from the sensor. In this case, each pattern overlaps 24 samples with its predecessor. In batch mode, it is typical to use a streaming window size of 1.
 <table class="table">
   <tr>
-    <td><img src="../images/Figure2.png" width="800"></td>
+    <td><img src="../images/streaming_window.png" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 3: One feature (all samples from the same sensor) and streaming window size of 25. Each input vector is 25 successive samples where we form successive patterns by dropping the oldest sample from the current pattern and appending the next sample from the input stream.</em></td>
@@ -103,7 +103,7 @@ The streaming configuration is defined by the following parameters:
 When a single pattern is assigned an cluster ID, this is called an *inference*. Besides its cluster ID, a number of other useful analytic outputs are generated. 
 
 ### Cluster ID (ID)
-The Boon Nano assigns a **Cluster ID** to each input vector as they are processed. The first vector is always assigned to a new cluster ID of 1. The next vector, if it is within the defined percent variation of cluster 1, is also assigned to cluster 1. Otherwise it is assigned to a new cluster 2. Continuing this way all vectors are assigned cluster IDs in such a way that each vector in each cluster is within the desired percent variation of that cluster's template. In some circumstances the cluster ID 0 may be assigned to a pattern. This happens, for example, if learning has been turned off or if the maximum cluster count has been reached. It should be noted that cluster IDs are assigned serially so having similar cluster IDs (for instance, 17 and 18) says nothing about the similarity of those clusters. However, PCA (see [Guide: Nano Status](../Guides/Guide_Nano_Status.md)) can be used to measure relative proximity of clusters to each other.
+The Boon Nano assigns a **Cluster ID** to each input vector as they are processed. The first vector is always assigned to a new cluster ID of 1. The next vector, if it is within the defined percent variation of cluster 1, is also assigned to cluster 1. Otherwise it is assigned to a new cluster 2. Continuing this way all vectors are assigned cluster IDs in such a way that each vector in each cluster is within the desired percent variation of that cluster's template. In some circumstances the cluster ID 0 may be assigned to a pattern. This happens, for example, if learning has been turned off or if the maximum cluster count has been reached. It should be noted that cluster IDs are assigned serially so having similar cluster IDs (for instance, 17 and 18) says nothing about the similarity of those clusters. However, PCA can be used to measure relative proximity of clusters to each other.
 
 ### Raw Anomaly Index (RI)
 The Boon Nano assigns to each pattern a **Raw Anomaly Index**, that indicates how many patterns are in its cluster relative to other clusters. These integer values range from 0 to 1000 where values close to zero signify patterns that are the most common and happen very frequently. Values close to 1000 are very infrequent and are considered more anomalous the closer the values get to 1000. Patterns with cluster ID of 0 have a raw anomaly index of 1000.
@@ -155,7 +155,7 @@ We now present a very simple example to illustrate some of these ideas. A set of
 
 <table class="table">
   <tr>
-    <td><img src="../images/Figure3.png" width="800"></td>
+    <td><img src="../images/sample_waveforms.png" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 5: A collection of 48 16-dimensional vectors to be clustered</em></td>
@@ -174,7 +174,7 @@ We configure the Nano with these parameters and then run the patterns through th
  
  <table class="table">
   <tr>
-    <td><img src="../images/Figure4.png" width="800"></td>
+    <td><img src="../images/color_coded.png" width="800"></td>
   </tr>
   <tr>
     <td><em>Figure 6: 48 patterns colored according to their assigned clusters</em></td>
