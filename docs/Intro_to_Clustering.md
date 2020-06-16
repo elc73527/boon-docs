@@ -111,6 +111,15 @@ The Boon Nano assigns to each pattern a **Raw Anomaly Index**, that indicates ho
 ### Smoothed Anomaly Index (SI)
 Building on the raw anomaly index, we create a **Smoothed Anomaly Index** which is an edge-preserving, exponential, smoothing filter applied to the raw anomaly indexes of successive input patterns. These values are also integer values ranging from 0 to 1000 with similar meanings as the raw anomaly index. In cases where successive input patterns do not indicate any temporal or local proximity, this smoothing may not be meaningful.
 
+<table class="table">
+  <tr>
+    <td><img src="../images/anomaly_detection.png" width="800"></td>
+  </tr>
+  <tr>
+    <td><em>Figure 5: Raw sensor signal (Blue) and SI, the Smoothed Anomaly Index (Amber), showing a rarely occuring pattern in the sensor stream model.</em></td>
+  </tr>
+</table>   
+
 ### Frequency Index (FI)
 Similar to the anomaly indexes, the **Frequency Index** measures the relative number of patterns placed in each cluster. The frequency index measures all cluster sizes relative to the average size cluster. Values equal to 1000 occur about equally often, neither abnormally frequent or infrequent. Values close to 0 are abnormally infrequent, and values significantly above 1000 are abnormally frequent.
 
@@ -139,6 +148,15 @@ The cluster growth curve shows the number of inferences between the creation of 
 ### PCA
 Clusters in the Boon Nano are naturally mapped into a very high-dimensional space. This makes it difficult to meaningfully visualize the clusters on a two- or three-dimensional plot. The Nano's PCA list is similar to traditional principal component analysis in the sense it can be used to remap a high-dimensional vector into a lower dimensional space that, as far as possible, preserves distances and limits the flattening effects of projection. The PCA coordinates can be used, for example, to assign RGB values to assign a meaningful color to each cluster. Clusters with different but similar colors are from clusters whose assigned patterns are different enough to be in distinct clusters but that are still close to each relative to the other clusters in the model. The zero cluster is always the first value in the list of PCA values and is always represented by [0, 0, 0].
 
+<table class="table">
+  <tr>
+    <td><img src="../images/ct_image.png" width="400"></td>
+  </tr>
+  <tr>
+    <td><em>Figure 6: Pulmonary CT image using PCA coloring to show distinct tissue textures and the gradients between them.</em></td>
+  </tr>
+</table>   
+
 ### numClusters
 This is a single value that is the current number of clusters in the model including cluster 0. This value should equal the length of the lists: PCA, clusterSizes, anomalyIndexes, frequencyIndexes, distanceIndexes, clusterGrowth.
 
@@ -158,7 +176,7 @@ We now present a very simple example to illustrate some of these ideas. A set of
     <td><img src="../images/sample_waveforms.png" width="800"></td>
   </tr>
   <tr>
-    <td><em>Figure 5: A collection of 48 16-dimensional vectors to be clustered</em></td>
+    <td><em>Figure 7: A collection of 48 16-dimensional vectors to be clustered</em></td>
   </tr>
 </table>   
 
@@ -177,7 +195,7 @@ We configure the Nano with these parameters and then run the patterns through th
     <td><img src="../images/color_coded.png" width="800"></td>
   </tr>
   <tr>
-    <td><em>Figure 6: 48 patterns colored according to their assigned clusters</em></td>
+    <td><em>Figure 8: 48 patterns colored according to their assigned clusters</em></td>
   </tr>
 </table>  
  
