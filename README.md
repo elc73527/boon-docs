@@ -4,7 +4,7 @@
 
 [Clustering with the Boon Nano](docs/Intro_to_Clustering.md)
 
-## amber
+## amber-cloud
 
 [REST/API Guide](static/index.html)
 
