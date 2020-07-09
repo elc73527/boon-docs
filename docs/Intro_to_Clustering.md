@@ -6,6 +6,7 @@ The Boon Nano is a high-speed, high-efficiency, clustering and segmentation algo
 <table class="table">
   <tr>
     <td><img src="../images/Segmentation.png" width="800">
+  </tr>
   <tr>
     <td><em>Figure 1: Semi-structured data is segmented by the Boon Nano based on L1-distance similarity.</em></td>
   </tr>
