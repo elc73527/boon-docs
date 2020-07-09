@@ -29,7 +29,7 @@ The Boon Nano clusters its input data by assigning each pattern an integer calle
 
 <table class="table">
   <tr>
-    <td><img src="../images/cluster_growth.png" width="400">
+    <td><img src="../images/cluster_growth.png" width="400"></td>
   </tr>
   <tr>
     <td><em>Figure 2: The number of clusters grows quickly as the first patterns from the input data are processed. The slope of the growth curve levels off as the models matures and as nearly all incoming patterns already have a cluster to which they can be assigned.</em></td>
