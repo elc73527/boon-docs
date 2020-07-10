@@ -6,7 +6,7 @@
 
 ## amber-cloud
 
-[REST/API Guide](amber-static/index.html])
+[REST/API Guide](amber-static/index.html)
 
 [Python SDK Documentation](https://boonlogic.github.io/amber-python-sdk)
 
