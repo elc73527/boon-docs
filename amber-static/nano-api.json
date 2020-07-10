@@ -2,11 +2,11 @@
   "swagger": "2.0",
   "info": {
     "description": "Boon Logic Amber API Server",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "title": "Amber API Server"
   },
-  "host": "amber-local.boonlogic.com",
-  "basePath": "/dev",
+  "host": "amber.boonlogic.com",
+  "basePath": "/v1",
   "schemes": [
     "https"
   ],
@@ -14,6 +14,8 @@
     "/config": {
       "get": {
         "operationId": "getConfig",
+        "summary": "Get the current configuration of a sensor instance",
+        "description": "Returns the current configuration of the sensor instance specified.",
         "consumes": [
           "application/json"
         ],
@@ -23,6 +25,7 @@
         "parameters": [
           {
             "name": "sensorId",
+            "description": "Unique identifier for sensor",
             "in": "header",
             "required": true,
             "type": "string"
@@ -30,31 +33,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/getConfigResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -83,6 +86,8 @@
       },
       "post": {
         "operationId": "postConfig",
+        "summary": "Apply configuration to a sensor instance",
+        "description": "Applies the provided configuration to the sensor instance specified.",
         "consumes": [
           "application/json"
         ],
@@ -92,6 +97,7 @@
         "parameters": [
           {
             "name": "sensorId",
+            "description": "Unique identifier for sensor",
             "in": "header",
             "required": true,
             "type": "string"
@@ -99,6 +105,7 @@
           {
             "in": "body",
             "name": "postConfigRequest",
+            "description": "Sensor configuration to be applied",
             "required": true,
             "schema": {
               "$ref": "#/definitions/postConfigRequest"
@@ -107,31 +114,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/postConfigResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -161,6 +168,8 @@
     },
     "/oauth2": {
       "post": {
+        "summary": "Request a bearer token using Amber account credentials",
+        "description": "Requests a bearer token using Amber account credentials. The requested bearer token is returned as the \"id-token\" response attribute. This token is to be used for authenticating API requests throughout a usage session and expires after 60 minutes.",
         "consumes": [
           "application/json"
         ],
@@ -170,6 +179,7 @@
         "parameters": [
           {
             "in": "body",
+            "description": "Account credentials to be used for authentication",
             "name": "postAuth2Request",
             "required": true,
             "schema": {
@@ -179,31 +189,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/postAuth2Response"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -231,6 +241,9 @@
     },
     "/sensor": {
       "get": {
+        "operationId": "getSensor",
+        "summary": "Get basic information about a sensor instance",
+        "description": "Returns basic information about an existing sensor instance.",
         "consumes": [
           "application/json"
         ],
@@ -240,6 +253,7 @@
         "parameters": [
           {
             "name": "sensorId",
+            "description": "Unique identifier for sensor",
             "in": "header",
             "required": true,
             "type": "string"
@@ -247,31 +261,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/getSensorResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -299,6 +313,9 @@
         }
       },
       "post": {
+        "operationId": "postSensor",
+        "summary": "Create a new a sensor instance",
+        "description": "Spawns a new sensor instance, returning its unique sensorId.",
         "consumes": [
           "application/json"
         ],
@@ -308,6 +325,7 @@
         "parameters": [
           {
             "in": "body",
+            "description": "Label for new sensor instance to be created",
             "name": "postSensorRequest",
             "required": true,
             "schema": {
@@ -317,31 +335,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/postSensorResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -369,6 +387,9 @@
         }
       },
       "put": {
+        "operationId": "putSensor",
+        "summary": "Update label for a sensor instance",
+        "description": "Changes the label of an existing sensor instance to the new label specified.",
         "consumes": [
           "application/json"
         ],
@@ -379,6 +400,7 @@
           {
             "in": "body",
             "name": "putSensorRequest",
+            "description": "New label to apply to sensor instance",
             "required": true,
             "schema": {
               "$ref": "#/definitions/putSensorRequest"
@@ -387,31 +409,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/putSensorResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -439,6 +461,9 @@
         }
       },
       "delete": {
+        "operationId": "deleteSensor",
+        "summary": "Delete a sensor instance",
+        "description": "Deletes the sensor instance with the specified sensorId.",
         "consumes": [
           "application/json"
         ],
@@ -448,6 +473,7 @@
         "parameters": [
           {
             "name": "sensorId",
+            "description": "Unique identifier for sensor",
             "in": "header",
             "required": true,
             "type": "string"
@@ -455,28 +481,28 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response"
+            "description": "Operation was successful"
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -506,6 +532,9 @@
     },
     "/sensors": {
       "get": {
+        "operationId": "getSensors",
+        "summary": "List all sensors for this user",
+        "description": "Returns a list of all current sensor instances for this user.",
         "consumes": [
           "application/json"
         ],
@@ -514,31 +543,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/getSensorsResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -568,6 +597,8 @@
     },
     "/status": {
       "get": {
+        "summary": "Get analytic information from a sensor",
+        "description": "Returns analytic information derived from data processed by a sensor thus far.",
         "operationId": "getStatus",
         "consumes": [
           "application/json"
@@ -578,6 +609,7 @@
         "parameters": [
           {
             "name": "sensorId",
+            "description": "Unique identifier for sensor",
             "in": "header",
             "required": true,
             "type": "string"
@@ -585,31 +617,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/getStatusResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -639,7 +671,9 @@
     },
     "/stream": {
       "post": {
-        "operationId": "postStreaming",
+        "summary": "Stream data to a sensor",
+        "description": "Sends data to a sensor. Ingoing data should be formatted as a simple string of comma-separated numbers with no spaces.\n\nThe following analytic results are returned:\n- state : sensor state as of this call (one of: \"Buffering\", \"Autotuning\", \"Learning\", \"Monitoring\", \"Error\")\n- SI : array of smoothed anomaly index values. These values correspond one-to-one with the input samples and range between 0 and 1000. Values closer to 0 represent input patterns which are ordinary given the data seen so far on this sensor. Values closer to 1000 represent novel patterns which are anomalous with respect to data seen before.",
+        "operationId": "postStream",
         "consumes": [
           "application/json"
         ],
@@ -649,11 +683,13 @@
         "parameters": [
           {
             "name": "sensorId",
+            "description": "Unique identifier for sensor",
             "in": "header",
             "required": true,
             "type": "string"
           },
           {
+            "description": "Data to be streamed to sensor. Should be formatted as a simple string of comma-separated numbers with no spaces (e.g. \"0,0.5,1,1.5,2\").",
             "in": "body",
             "name": "postStreamRequest",
             "required": true,
@@ -664,31 +700,31 @@
         ],
         "responses": {
           "200": {
-            "description": "200 response",
+            "description": "Operation was successful",
             "schema": {
               "$ref": "#/definitions/postStreamResponse"
             }
           },
           "400": {
-            "description": "400 response",
+            "description": "Bad request",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "401": {
-            "description": "401 response",
+            "description": "Unauthorized",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "500": {
-            "description": "500 response",
+            "description": "Server error",
             "schema": {
               "$ref": "#/definitions/Error"
             }
           },
           "404": {
-            "description": "404 response",
+            "description": "The specified resource was not found",
             "schema": {
               "$ref": "#/definitions/Error"
             }
@@ -782,7 +818,7 @@
             "percentVariation": {
               "type": "number",
               "format": "float",
-              "description": "the percent variation (for instance, 0.025 gives 2.5% variation) for the clustering"
+              "description": "the percent variation (for instance, 0.025 gives 2.5% variation) used for clustering"
             }
           }
         }
