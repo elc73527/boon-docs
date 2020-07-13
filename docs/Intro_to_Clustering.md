@@ -36,6 +36,7 @@ The Boon Nano clusters its input data by assigning each pattern an integer calle
 </table>
 
 The Boon Nano is deployed in both a general-use platform called **Expert** and as a streaming sensor analytics application called **Amber**
+
 * **Expert:** The Expert console provides the full functionality of the Boon Nano including all analytics (described below) and is oriented toward batch processing of input data.
 * **Amber:** By specializing the Expert console for real-time streaming data, Amber provides an easy-to-use interface for sending streams of successive sensor values as a time series and getting back analytic values that correspond one-for-one to the sensor values. These analytic values are typically used for anomaly detection in the sensor stream.   
 
@@ -46,6 +47,7 @@ The Boon Nano is deployed in both a general-use platform called **Expert** and a
 
 ### Clustering Configuration
 The Boon Nano uses the clustering configuration to determine the properties of the model that will be built for the input data.
+
 * **numericType:** One numeric type is chosen to apply to all of the features in each input vector. A good default choice for numeric type is float32, which represents 32-bit, IEEE-standard, floating-point values. In some cases, all features in the input data are integers ranging from -32,768 and 32,767 (int16) or non-negative integers ranging from 0 to 65,535 (uint16), for instance, bin counts in a histogram. Using these integer types may give slightly faster inference times, however, float32 performance is usually similar to the performance for the integer types. For nearly all applications, float32 is a good general numeric type to use.
 * **Feature List:** A pattern is comprised of **features** which represent the properties of each column in the vectors to be clustered. Each feature has a **range** (a min and max value) that represents the expected range of values that feature will take on in the input data. This range need not represent the entire range of the input data. For example, if the range of a feature is set to -5 to 5, then values greater than 5 will be treated as if they were 5 and value less than -5 will be treated as -5. This truncation (or outlier filtering) can be useful in some data sets. Each feature is also assigned a **weight** between 0 and 1000 which determines its relative importance in assignment of patterns into clusters. Setting all weights to 1 is a common setting, which means all features are weighted equally. Setting a weight to 0 means that feature is ignored in clustering as if it were not in the vector at all. Finally, each feature can be assigned an optional user-defined **label** (for example, "systolic", "pulse rate", "payload length", "output current"). Labels have no effect on the clustering.  
 * **percentVariation:** The percent variation setting ranges from 1% to 20% and determines the degree of similarity the Nano will require between patterns assigned to the same cluster. Smaller percent variation settings create more clusters with each cluster having more similarity between patterns assigned it. A larger choice for percent variation produces coarser clustering with fewer clusters.
@@ -82,7 +84,7 @@ As sensor values are streamed into it, Amber transitions automatically through f
     <td><img src="../images/amber_training.png" width="800"></td>
   </tr>
   <tr>
-    <td><em>Figure 4: The Amber application of the Boon Nano trains itself autonomously based on the real-time data it is acquiring. It builds a buffere of representative data, tunes its hyperparameters and then start segmenting and assinging anomaly indexes to each sensor sample.</em></td>
+    <td><em>Figure 4: The Amber application of the Boon Nano trains itself autonomously based on the real-time data it is acquiring. It builds a buffer of representative data, tunes its hyperparameters and then start segmenting and assinging anomaly indexes to each sensor sample.</em></td>
   </tr>
 </table>
 
@@ -92,6 +94,7 @@ As sensor values are streamed into it, Amber transitions automatically through f
 * **Monitoring:** The final phase of Amber is the monitoring phase where learning has been turned off. Each sensor value sent in becomes the final sample in the streaming window of prior samples. That window is clustered by the Boon Nano in real-time and the result returned as the Amber analytic value for that sample.
 
 The streaming configuration is defined by the following parameters:
+
 * **enableAutotuning** and **samplesToBuffer:** If enableAutotuning is set to true, then incoming sensor samples will be buffered until samplesToBuffer have been collected at which time autotuning begins on the buffered sensor data. Autotuning will typically require approximately 200 more sensor values to complete. Once autotuning is complete, then Amber uses the autotuned ranges and percent variation to configure the Nano.
 * **learningGraduation:** If this is set to false, then learning continues indefinitely which means that clusters will continue to be added for patterns that cannot be placed into an existing cluster. Typically, it is set to true in which case the graduation requirements are used to automatically turn off learning if any of the graduation requirements is met.
 * **learningMaxClusters (Graduation Requirement):** If during the learning phase, the Nano has a total of learningMaxClusters clusters in its model, then learning is automatically turned off.
@@ -108,8 +111,15 @@ The Boon Nano assigns a **Cluster ID** to each input vector as they are processe
 ### Raw Anomaly Index (RI)
 The Boon Nano assigns to each pattern a **Raw Anomaly Index**, that indicates how many patterns are in its cluster relative to other clusters. These integer values range from 0 to 1000 where values close to zero signify patterns that are the most common and happen very frequently. Values close to 1000 are very infrequent and are considered more anomalous the closer the values get to 1000. Patterns with cluster ID of 0 have a raw anomaly index of 1000.
 
-### Smoothed Anomaly Index (SI)
-Building on the raw anomaly index, we create a **Smoothed Anomaly Index** which is an edge-preserving, exponential, smoothing filter applied to the raw anomaly indexes of successive input patterns. These values are also integer values ranging from 0 to 1000 with similar meanings as the raw anomaly index. In cases where successive input patterns do not indicate any temporal or local proximity, this smoothing may not be meaningful.
+### Frequency Index (FI)
+Similar to the anomaly indexes, the **Frequency Index** measures the relative number of patterns placed in each cluster. The frequency index measures all cluster sizes relative to the average size cluster. Values equal to 1000 occur about equally often, neither abnormally frequent or infrequent. Values close to 0 are abnormally infrequent, and values significantly above 1000 are abnormally frequent.
+
+
+### Distance Index (DI)
+The **Distance Index** measures the distance of each cluster template to the centroid of all of the cluster templates. This overall centroid is used as the reference point for this measurement. The values range from 0 to 1000 indicating that distance with indexes close to 1000 as indicating patterns furthest from the center and values close to 0 are very close. Patterns in a space that are similar distances apart have values that are close to the average distance between all clusters to the centroid.
+
+### Smoothed Anomaly Index (SI) (Streaming Mode Analytic)
+Building on the raw anomaly index, we create a **Smoothed Anomaly Index** which is an edge-preserving, exponential, smoothing filter applied to the raw anomaly indexes (RI) of successive input patterns. These values are also integer values ranging from 0 to 1000 with similar meanings as the raw anomaly index. In cases where successive input patterns do not indicate any temporal or local proximity, this smoothing may not be meaningful.
 
 <table class="table">
   <tr>
@@ -120,12 +130,17 @@ Building on the raw anomaly index, we create a **Smoothed Anomaly Index** which 
   </tr>
 </table>   
 
-### Frequency Index (FI)
-Similar to the anomaly indexes, the **Frequency Index** measures the relative number of patterns placed in each cluster. The frequency index measures all cluster sizes relative to the average size cluster. Values equal to 1000 occur about equally often, neither abnormally frequent or infrequent. Values close to 0 are abnormally infrequent, and values significantly above 1000 are abnormally frequent.
+### Anomaly Detections (AD) (Streaming Mode Analytic)
+A sequence of 0's and 1's as **aAnomaly Detection** values. These correspond one-to-one with input samples and are produced by thresholding the smoothed anomaly index (SI). The threshold is determined automatically from the SI values. A value of 0 indicates that the SI has not exceeded the anomaly detection threshold. A value of 1 indicates it has exceed the threshold, signaling an anomaly at the corresponding input sample.
 
+### Anomaly History (AH) (Streaming Mode Analytic)
+An sequence of **Anomaly History** values. These values are a moving-window sum of the AD values, giving the number of anomaly detections (1's) present in the AD signal over a "recent history" window whose length is the buffer size.
 
-### Distance Index (DI)
-The **Distance Index** measures the distance of each cluster template to the centroid of all of the cluster templates. This overall centroid is used as the reference point for this measurement. The values range from 0 to 1000 indicating that distance with indexes close to 1000 as indicating patterns furthest from the center and values close to 0 are very close. Patterns in a space that are similar distances apart have values that are close to the average distance between all clusters to the centroid.
+### Amber Metric (AM) (Streaming Mode Analytic)
+An sequence of **Amber Metric** values. These are floating-point values between 0.0 and 1.0 indicating the extent to which each corresponding AH value shows an unusually high number of anomalies in recent history. The values are derived statistically from a Poisson model, with values close to 1.0 signaling a higher frequency of anomalies than usual.
+
+### Amber Warning Level (AW) (Streaming Mode Analytic)
+An sequence of **Amber Warning Level** values. This index is produced by thresholding the Amber Metric (AM) and takes on the values 0, 1 or 2 representing a discrete "warning level" for an asset based on the frequency of anomalies within recent history: 0 = normal, 1 = asset changing , 2 = asset critical. The default thresholds for the two warning levels are the standard statistical values of .95 (outlier, asset changing) and .997 (extreme outlier, asset critical).
 
 ## Nano Status
 Whereas Nano Results (above) give specific analytic results for the patterns in the most recently processed sample buffer, **Nano Status** provides core analytics about the Nano itself and the current machine learning model that has been constructed since it was configured. The results are indexed by cluster ID beginning with cluster 0. 
@@ -168,6 +183,7 @@ The value returned here is the average time to cluster each inference in microse
  
 ## Example
 We now present a very simple example to illustrate some of these ideas. A set of 48 patterns is shown in the figure below. A quick look across these indicates that there are at least two different clusters here. Each pattern has 16 features so we configure the Nano for
+
 * Numeric Type of float32
 * Pattern Length of 16
 
@@ -182,6 +198,7 @@ We now present a very simple example to illustrate some of these ideas. A set of
 
 
 We could select the mininum and maximum by visual inspection, but it is not possible to determine the correct Percent Variation this way. So we instead load the patterns into the Nano and tell the Nano to Autotune those parameters. The results comes back with 
+
 * Min = -4.39421
 * Max = 4.34271
 * Percent Variation = 0.073
@@ -199,14 +216,16 @@ We configure the Nano with these parameters and then run the patterns through th
   </tr>
 </table>  
  
-The Raw Anomaly index for each of the three clusters are as follows:
-* Cluster 1 Raw Anomaly Index: 0
-* Cluster 2 Raw Anomaly Index: 170
-* Cluster 3 Raw Anomaly Index: 563
+The Raw Anomaly index for each of the three clusters are as follows: 
+
+* Cluster 1 Raw Anomaly Index: 0 
+* Cluster 2 Raw Anomaly Index: 170 
+* Cluster 3 Raw Anomaly Index: 563 
 
 This indicates Cluster 1 had the most patterns assigneed to it. Cluster 2 was also common, and Cluster 3 was significantly less common. It is worth noting that a Raw Anomaly Index of 563 would not be sufficient in practice to indicate an anomaly in the machine learning model. Typically, useful anomaly indexes must be in the range of 700 to 1000 to indicate a pattern that is far outside the norm of what has been learned.
 
-**Important Simplifications:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular, 
+**Important Simplifications:** This is an artificially small and simple example to illustrate the meaning of some of the basic principles of using the Boon Nano. In particular,  
+
 * The Boon Nano is typically be used to cluster millions or billions of patterns.
 * The number of clusters created from "real" data typically runs into the hundreds or even thousands of clusters. 
 * The speed of the Boon Nano for such a small data set is not noticeable over other clustering techniques such as K-means. However, when the input set contains 100s of millions of input vectors or when the clustering engine must run at sustained rates of 100s of thousands of inferences per second (as with video or streaming sensor data), the Boon Nano's microsecond inference speed makes it the only feasible technology for these kinds of solutions.
