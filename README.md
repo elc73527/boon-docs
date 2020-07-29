@@ -6,18 +6,20 @@
 
 ## amber-cloud
 
-[REST/API Guide](amber-static/index.html)
+[Overview](docs/Amber_overview.md)
 
-[Python SDK Documentation](https://boonlogic.github.io/amber-python-sdk)
+[REST API](docs/Amber_REST.md)
+
+[Python SDK](https://boonlogic.github.io/amber-python-sdk)
 
 ## expert-console
 
-[REST/API Guide](static/index.html)
+[REST API](static/index.html)
 
-[Excel SDK Documentation](https://boonlogic.github.io/expert-excel-sdk)
+[Excel SDK](https://boonlogic.github.io/expert-excel-sdk)
 
-[Python SDK Documentation](https://boonlogic.github.io/expert-python-sdk)
+[Python SDK](https://boonlogic.github.io/expert-python-sdk)
 
-[Matlab SDK Documentation](https://boonlogic.github.io/expert-matlab-sdk)
+[Matlab SDK](https://boonlogic.github.io/expert-matlab-sdk)
 
-[Mathematica Documentation](https://boonlogic.github.io/expert-mathematica-sdk)
+[Mathematica](https://boonlogic.github.io/expert-mathematica-sdk)
