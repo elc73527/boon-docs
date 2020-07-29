@@ -1,10 +1,10 @@
 ![Logo](../images/BoonLogic.png)   
 
-# Boon Amber: overview
+# Overview of the Boon Amber
 
 Boon Amber is a real-time, self-configuring anomaly detection system based on unsupervised machine learning. Amber uses the Boon Nano clustering algorithm to build a rich, high-dimensional model of any data stream which is then employed to detect anomalies as departures from the learned data distribution. Amber assigns an **anomaly index** to *n*-space input vectors (or **patterns**) in real-time based on the extent to which any given pattern resembles, or departs from, inputs seen in the past. Each pattern is a sequence of **features** that encode numerical attributes of the data stream being monitored.
 
-## Examples of Data Streams
+## Examples of data streams
 
 * **Single sensor streaming data:**  Consecutive overlapping windows of the most recent *n* samples from a sensor timeseries form a natural collection of *n*-dimensional vectors.
 
