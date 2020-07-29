@@ -6,7 +6,7 @@
 
 ## amber-cloud
 
-[Overview](docs/Amber_overview.md)
+[General overview](docs/Amber_overview.md)
 
 [REST API](docs/Amber_REST.md)
 
@@ -22,4 +22,4 @@
 
 [Matlab SDK](https://boonlogic.github.io/expert-matlab-sdk)
 
-[Mathematica](https://boonlogic.github.io/expert-mathematica-sdk)
+[Mathematica SDK](https://boonlogic.github.io/expert-mathematica-sdk)
