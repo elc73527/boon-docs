@@ -29,6 +29,7 @@ Example:
 
     curl --request POST \
       --url https://amber.boonlogic.com/v1/oauth2 \
+      --header "Content-Type: application/json" \
       --data '{"username": "my-username", "password": "my-password"}'
 
 ## GET /sensors
@@ -58,6 +59,7 @@ Example:
 
     curl --request GET \
       --url https://amber.boonlogic.com/v1/sensors \
+      --header "Content-Type: application/json" \
       --header "Authorization: Bearer ${idToken}"
 
 ## POST /sensor
@@ -87,6 +89,7 @@ Example:
     curl --request POST \
       --url https://amber.boonlogic.com/v1/sensor \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --data '{"label": "my-label"}'
 
 ## GET /sensor
@@ -147,6 +150,7 @@ Example:
     curl --request GET \
       --url https://amber.boonlogic.com/v1/sensor \
       --header "Authorization: Bearer ${idToken}"
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
 
 ## PUT /sensor
@@ -177,6 +181,7 @@ Example:
     curl --request PUT \
       --url https://amber.boonlogic.com/v1/sensor \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef" \
       --data '{"label": "my-new-label"}'
 
@@ -200,6 +205,7 @@ Example:
     curl --request DELETE \
       --url https://amber.boonlogic.com/v1/sensor \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
 
 ## POST /config
@@ -240,6 +246,7 @@ Example:
     curl --request POST \
       --url https://amber.boonlogic.com/v1/config \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef" \
       --data '{"featureCount": 1, "streamingWindowSize": 25, "samplesToBuffer": 1000, "learningRateNumerator": 10, "learningRateDenominator": 10000, "learningMaxSamples": 1000000, "learningMaxClusters": 1000}'
 
@@ -279,6 +286,7 @@ Example:
     curl --request GET \
       --url https://amber.boonlogic.com/v1/config \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
 
 ## POST /stream
@@ -323,6 +331,7 @@ Example:
     curl --request POST \
       --url https://amber.boonlogic.com/v1/stream \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef" \
       --data '{"data": "0,0.5,1,1.5,2"}'
 
@@ -359,4 +368,5 @@ Example:
     curl --request GET \
       --url https://amber.boonlogic.com/v1/status \
       --header "Authorization: Bearer ${idToken}" \
+      --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
