@@ -149,7 +149,7 @@ Example:
 
     curl --request GET \
       --url https://amber.boonlogic.com/v1/sensor \
-      --header "Authorization: Bearer ${idToken}"
+      --header "Authorization: Bearer ${idToken}" \
       --header "Content-Type: application/json" \
       --header "sensorId: 0123456789abcdef"
 
