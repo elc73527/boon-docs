@@ -12,6 +12,8 @@
 
 [Python SDK](https://boonlogic.github.io/amber-python-sdk)
 
+[Javascript SDK (beta)](https://boonlogic.github.io/amber-javascript-sdk)
+
 ## expert-console
 
 [REST API](static/index.html)
