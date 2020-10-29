@@ -14,6 +14,8 @@
 
 [Javascript SDK (beta)](https://boonlogic.github.io/amber-javascript-sdk)
 
+[C++ SDK (beta)](https://boonlogic.github.io/amber-cpp-sdk)
+
 ## expert-console
 
 [REST API](static/index.html)

@@ -90,6 +90,7 @@ Example:
       --url https://amber.boonlogic.com/v1/sensor \
       --header "Authorization: Bearer ${idToken}" \
       --header "Content-Type: application/json" \
+      --header "sensorId: 0123456789abcdef" \
       --data '{"label": "my-label"}'
 
 ## GET /sensor
